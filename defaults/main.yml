@@ -1,0 +1,24 @@
+---
+janus_home_dir: "/home"
+janus_users: []
+  # - {
+  #   user: "someuser",
+  #   group: "somegroup"
+  # }
+janus_backup_files:
+  - ".vim",
+  - ".vimrc",
+  - ".gvimrc"
+janus_vim_plugins: []
+#  - {
+#    name: "vdebug",
+#    url: "https://github.com/joonty/vdebug.git"
+#  }
+#  - {
+#    name: "vim-surround",
+#    url: "https://github.com/tpope/vim-surround.git"
+#  }
+janus_vim_plugins_update: yes
+janus_created_directories:
+  - ".janus"
+  - ".vim"
