@@ -1,7 +1,7 @@
 # Ansible Role Janus
 
 This role uses Ansible to install the [Janus Vim distribution](https://github.com/carlhuda/janus)
-for one or more users on macOS or Ubuntu, replacing its [automatic installer](https://github.com/carlhuda/janus/blob/master/bootstrap.sh).
+for one or more users on macOS or Ubuntu, replacing Janus' [automatic installer](https://github.com/carlhuda/janus/blob/master/bootstrap.sh).
 
 ## Role Variables
 
