@@ -6,8 +6,8 @@ janus_users: []
   #   group: "somegroup"
   # }
 janus_backup_files:
-  - ".vim",
-  - ".vimrc",
+  - ".vim"
+  - ".vimrc"
   - ".gvimrc"
 janus_vim_plugins: []
 #  - {
