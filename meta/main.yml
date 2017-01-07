@@ -1,6 +1,6 @@
 galaxy_info:
   author: Christopher Torgalson
-  description: A role to install the Janus Vim distribution.
+  description: Installs and configures the Janus Vim distribution for one or more users on macOS or Ubuntu.
   # company: your company (optional)
 
   # If the issue tracker for your role is not on github, uncomment the
@@ -138,8 +138,8 @@ galaxy_info:
   #  - utopic
   #  - vivid
   #  - wily
-  #  - xenial
-    - yakkety
+     - xenial
+     - yakkety
   #- name: Debian
   #  versions:
   #  - all
