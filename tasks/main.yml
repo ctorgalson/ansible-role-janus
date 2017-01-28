@@ -28,6 +28,8 @@
   with_nested:
     - "{{ janus_users }}"
     - "{{ janus_vim_plugins }}"
+  register: git_result
+  changed_when: "git_result.after | default('after') != git_result.before | default('before')"
 
 - name: Run `rake` in each user's new .vim directory.
   command: rake
@@ -48,7 +50,5 @@
   register: ownership
   become: True
   changed_when: false
-  failed_when: "ownership.owner != '{{ item.0.user }}'"
+  failed_when: "ownership.owner != '{{ item.0.user }}' or ownership.group != '{{ item.0.group }}'"
 
-- debug:
-    var: ownership.results
