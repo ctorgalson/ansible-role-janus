@@ -36,7 +36,9 @@
     - "{{ janus_vim_plugins }}"
 
 - name: Run `rake` in each user's new .vim directory.
-  command: "chdir={{ janus_home_dir }}/{{ item.user }}/.vim rake"
+  command: rake
+    args:
+      chdir: "{{ janus_home_dir }}/{{ item.user }}/.vim"
   with_items: "{{ janus_users }}"
   become: True
 
