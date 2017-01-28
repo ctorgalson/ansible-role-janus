@@ -50,4 +50,4 @@
 
 - debug:
     var: item
-  with: ownership.results
+  with_items: ownership.results
