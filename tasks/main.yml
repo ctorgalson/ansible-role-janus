@@ -6,7 +6,7 @@
   register: dot_janus_exists
 
 - debug:
-    var: "{{ item }}"
+    var: "{{ item.0 }}"
   with_items: "{{ dot_janus_exists }}"
 
   # We run this task only when `~/.janus` does NOT exist, because that means
