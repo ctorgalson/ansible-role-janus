@@ -49,4 +49,5 @@
   become: True
 
 - debug:
-    var: ownership
+    var: item
+  with: ownership.results
