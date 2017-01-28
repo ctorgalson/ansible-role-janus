@@ -29,7 +29,7 @@
   git:
     repo: "{{ item.1.url }}"
     dest: "{{ janus_home_dir }}/{{ item.0.user }}/.janus/{{ item.1.name }}"
-    force: yes
+    force: no
     update: "{{ janus_vim_plugins_update }}"
   with_nested:
     - "{{ janus_users }}"
