@@ -12,6 +12,11 @@
     update: no
   with_items: "{{ janus_users }}"
   become: True
+  register: git_result
+  changed_when: "git_result.after | default('after') != git_result.before | default('before')"
+
+- debug:
+    var: git_result
 
 - name: Ensure `.janus` directory exists for each user.
   file:
@@ -28,11 +33,6 @@
   with_nested:
     - "{{ janus_users }}"
     - "{{ janus_vim_plugins }}"
-  register: git_result
-  changed_when: "git_result.after | default('after') != git_result.before | default('before')"
-
-- debug:
-    var: git_result
 
 - name: Run `rake` in each user's new .vim directory.
   command: rake
