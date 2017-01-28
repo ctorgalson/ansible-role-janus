@@ -23,9 +23,6 @@
         name: "{{ item.user }}"
       with_items: "{{ janus_users }}"
 
-    - name: TEST
-      command: "ls -hal /home"
-
     - name: Update apt cache.
       apt: update_cache=yes cache_valid_time=600
       when: ansible_os_family == 'Debian'
@@ -36,6 +33,7 @@
         state: present
       with_items:
         - git
+        - rake
       when: ansible_os_family == 'Debian'
 
   roles:
