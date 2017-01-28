@@ -16,8 +16,8 @@ script:
   - container_id=$(mktemp)
   - 'docker run --detach --volume="${PWD}":/etc/ansible/roles/role_under_test:ro ${run_opts} geerlingguy/docker-${distro}-ansible-latest "${init}" > "${container_id}'
   # Adds users for test.
-  - 'sudo adduser alice'
-  - 'sudo adduser bob'
+  - 'sudo adduser alice --disabled-password'
+  - 'sudo adduser bob --disabled-password'
   # Check the role/playbook's syntax.
   - >
     docker exec --tty "$(cat ${container_id})" env TERM=xterm
