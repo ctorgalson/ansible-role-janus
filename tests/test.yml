@@ -21,8 +21,10 @@
     - name: Add users for testing.
       user:
         name: "{{ item.user }}"
-        group: "{{ item.group }}"
       with_items: "{{ janus_users }}"
+
+    - name: TEST
+      command: "ls -hal /home"
 
     - name: Update apt cache.
       apt: update_cache=yes cache_valid_time=600
