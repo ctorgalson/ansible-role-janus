@@ -47,7 +47,7 @@
     - "{{ janus_created_directories }}"
   register: ownership
   become: True
-  when: ownership.owner not "{{ item.0.user }}"
+  changed_when: ownership.owner not "{{ item.0.user }}"
 
 - debug:
     var: ownership.results
