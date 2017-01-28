@@ -5,6 +5,10 @@
   with_items: "{{ janus_users }}"
   register: dot_janus_exists
 
+- debug:
+    var: dot_janus_exists
+  with_items: "{{ janus_users }}"
+
   # We run this task only when `~/.janus` does NOT exist, because that means
   # this sytem is not (yet) managed with Ansible. Once it is, changes to .janus
   # should be confined to `.vimrc.after` or changes to this role.
