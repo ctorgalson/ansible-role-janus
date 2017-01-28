@@ -17,5 +17,18 @@
         url: "https://github.com/joonty/vdebug.git"
       }
 
+  pre_tasks:
+    - name: Update apt cache.
+      apt: update_cache=yes cache_valid_time=600
+      when: ansible_os_family == 'Debian'
+
+    - name: Ensure build dependencies are installed (Ubuntu 16.*).
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - git
+      when: ansible_os_family == 'Debian'
+
   roles:
     - role_under_test
