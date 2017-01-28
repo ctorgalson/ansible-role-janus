@@ -13,7 +13,7 @@
   with_nested:
     - "{{ janus_users }}"
     - "{{ janus_backup_files }}"
-  when: !dot_janus_exists.stat
+  when: not dot_janus_exists.stat
 
 - name: Clone janus repository to each user's home directory.
   git:
