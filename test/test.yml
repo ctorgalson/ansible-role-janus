@@ -1,0 +1,21 @@
+---
+- hosts: all
+
+  vars:
+    janus_users:
+      - {
+        user: "alice",
+        group: "alice"
+      }
+      - {
+        user: "bob",
+        group: "bob"
+      }
+    janus_vim_plugins:
+      - {
+        name: "vdebug",
+        url: "https://github.com/joonty/vdebug.git"
+      }
+
+  roles:
+    - role_under_test
