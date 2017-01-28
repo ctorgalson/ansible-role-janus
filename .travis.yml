@@ -4,7 +4,7 @@ sudo: required
 env:
   - distro: ubuntu1604
     init: /lib/systemd/systemd
-    run_opts: "--privileged --volume=sys/fs/cgroup:/sys/fs/cgroup:ro"
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
 
 services:
   - docker
