@@ -45,4 +45,8 @@
   with_nested:
     - "{{ janus_users }}"
     - "{{ janus_created_directories }}"
+  register: ownership
   become: True
+
+- debug:
+    var: ownership
