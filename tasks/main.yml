@@ -7,7 +7,7 @@
 
 - debug:
     var: "{{ item }}"
-  with_items: "{{ janus_users }}"
+  with_items: "{{ dot_janus_exists }}"
 
   # We run this task only when `~/.janus` does NOT exist, because that means
   # this sytem is not (yet) managed with Ansible. Once it is, changes to .janus
