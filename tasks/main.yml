@@ -1,10 +1,4 @@
 ---
-- name: Check for previously exsiting .vim directories.
-  stat:
-    path: "{{ janus_home_dir }}/{{ item.user }}/.vim"
-  with_items: "{{ janus_users }}"
-  register: dot_vim_exists
-
 - name: Back up previous vim install files.
   command: "removes={{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }} creates={{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }}.old mv {{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }} {{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }}.old"
   with_nested:
@@ -15,9 +9,14 @@
   git:
     repo: "https://github.com/carlhuda/janus.git"
     dest: "{{ janus_home_dir }}/{{ item.user }}/.vim"
-    update: no
+    update: yes
   with_items: "{{ janus_users }}"
   become: True
+  register: git_result
+  changed_when: "git_result.after | default('after') != git_result.before | default('before')"
+
+- debug:
+    var: git_result
 
 - name: Ensure `.janus` directory exists for each user.
   file:
@@ -29,14 +28,16 @@
   git:
     repo: "{{ item.1.url }}"
     dest: "{{ janus_home_dir }}/{{ item.0.user }}/.janus/{{ item.1.name }}"
-    force: yes
+    force: no
     update: "{{ janus_vim_plugins_update }}"
   with_nested:
     - "{{ janus_users }}"
     - "{{ janus_vim_plugins }}"
 
 - name: Run `rake` in each user's new .vim directory.
-  command: "chdir={{ janus_home_dir }}/{{ item.user }}/.vim rake"
+  command: rake
+  args:
+    chdir: "{{ janus_home_dir }}/{{ item.user }}/.vim"
   with_items: "{{ janus_users }}"
   become: True
 
@@ -49,4 +50,8 @@
   with_nested:
     - "{{ janus_users }}"
     - "{{ janus_created_directories }}"
+  register: ownership
   become: True
+  changed_when: false
+  failed_when: "ownership.owner != '{{ item.0.user }}' or ownership.group != '{{ item.0.group }}'"
+
