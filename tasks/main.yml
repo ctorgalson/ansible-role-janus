@@ -10,6 +10,7 @@
     repo: "https://github.com/carlhuda/janus.git"
     dest: "{{ janus_home_dir }}/{{ item.user }}/.vim"
     update: no
+    track_submodules: yes
   with_items: "{{ janus_users }}"
   become: True
   register: git_result
