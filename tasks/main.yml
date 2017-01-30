@@ -1,9 +1,16 @@
 ---
+- name: Check for existence of `.janus` directory.
+  stat:
+    path: "{{ janus_home_dir }}/{{ item.user }}/.janus"
+  register: janus_dir
+  with_items: "{{ janus_users }}"
+
 - name: Back up previous vim install files.
   command: "removes={{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }} creates={{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }}.old mv {{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }} {{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }}.old"
   with_nested:
     - "{{ janus_users }}"
     - "{{ janus_backup_files }}"
+  changed_when: false
 
 - name: Clone janus repository to each user's home directory.
   git:
@@ -15,7 +22,7 @@
 
 - name: Ensure `.janus` directory exists for each user.
   file:
-    path: "{{ janus_home_dir }}/.janus"
+    path: "{{ janus_home_dir }}/{{ item.user }}/.janus"
     state: directory
   with_items: "{{ janus_users }}"
 
@@ -33,6 +40,7 @@
   command: "chdir={{ janus_home_dir }}/{{ item.user }}/.vim rake"
   with_items: "{{ janus_users }}"
   become: True
+  when: janus_always_run_rake
 
 - name: Make sure permissions are correct in user's own home directories.
   file:
