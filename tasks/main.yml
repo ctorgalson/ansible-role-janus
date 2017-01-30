@@ -2,7 +2,7 @@
 - name: Check for existence of `.janus` directory.
   stat:
     path: "{{ janus_home_dir }}/{{ item_user }}/.janus"
-  register: janus_status
+  register: janus_dir
   with_items: "{{ janus_users }}"
 
 - name: Back up previous vim install files.
@@ -11,11 +11,6 @@
     - "{{ janus_users }}"
     - "{{ janus_backup_files }}"
 
-- name: Get latest commit of janus repo.
-  command: "chdir={{ janus_home_dir }}/{{ item.user }}/.vim git rev-parse HEAD"
-  with_items: "{{ janus_users }}"
-  register: last_commit
-
 - name: Clone janus repository to each user's home directory.
   git:
     repo: "https://github.com/carlhuda/janus.git"
@@ -23,6 +18,7 @@
     update: no
   with_items: "{{ janus_users }}"
   become: True
+  when: janus_dir.stat.isdir is not defined
 
 - name: Ensure `.janus` directory exists for each user.
   file:
@@ -44,6 +40,7 @@
   command: "chdir={{ janus_home_dir }}/{{ item.user }}/.vim rake"
   with_items: "{{ janus_users }}"
   become: True
+  when: (janus_dir.stat.isdir is defined and janus_dir.stat.isdir) or janus_always_run_rake
 
 - name: Make sure permissions are correct in user's own home directories.
   file:
