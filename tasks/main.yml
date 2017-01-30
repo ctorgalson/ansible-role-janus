@@ -44,3 +44,6 @@
     - "{{ janus_users }}"
     - "{{ janus_created_directories }}"
   become: True
+  register: ownership
+  changed_when: false
+  failed_when: "ownership.owner != '{{ item.0.user }}' or ownership.group != '{{ item.0.group }}'"
