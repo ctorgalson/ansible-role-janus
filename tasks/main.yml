@@ -10,6 +10,7 @@
   with_nested:
     - "{{ janus_users }}"
     - "{{ janus_backup_files }}"
+  when: not janus_dir.stat.exists
 
 - name: Clone janus repository to each user's home directory.
   git:
@@ -18,7 +19,7 @@
     update: no
   with_items: "{{ janus_users }}"
   become: True
-  when: janus_dir.stat.isdir is not defined
+  when: not janus_dir.stat.exists
 
 - name: Ensure `.janus` directory exists for each user.
   file:
@@ -40,7 +41,7 @@
   command: "chdir={{ janus_home_dir }}/{{ item.user }}/.vim rake"
   with_items: "{{ janus_users }}"
   become: True
-  when: (janus_dir.stat.isdir is defined and janus_dir.stat.isdir) or janus_always_run_rake
+  when: janus_dir.stat.exists or janus_always_run_rake
 
 - name: Make sure permissions are correct in user's own home directories.
   file:
