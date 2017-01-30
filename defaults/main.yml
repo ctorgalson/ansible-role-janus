@@ -22,3 +22,4 @@ janus_vim_plugins_update: yes
 janus_created_directories:
   - ".janus"
   - ".vim"
+janus_always_run_rake: yes
