@@ -11,6 +11,11 @@
     - "{{ janus_users }}"
     - "{{ janus_backup_files }}"
 
+- name: Get latest commit of janus repo.
+  command: "chdir={{ janus_home_dir }}/{{ item.user }}/.vim git rev-parse HEAD"
+  with_items: "{{ janus_users }}"
+  register: last_commit
+
 - name: Clone janus repository to each user's home directory.
   git:
     repo: "https://github.com/carlhuda/janus.git"
