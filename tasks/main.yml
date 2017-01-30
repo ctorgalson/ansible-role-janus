@@ -22,7 +22,7 @@
 
 - name: Ensure `.janus` directory exists for each user.
   file:
-    path: "{{ janus_home_dir }}/.janus"
+    path: "{{ janus_home_dir }}/{{ item.user }}/.janus"
     state: directory
   with_items: "{{ janus_users }}"
 
