@@ -1,7 +1,7 @@
 ---
 - name: Check for existence of `.janus` directory.
   stat:
-    path: "{{ janus_home_dir }}/{{ item_user }}/.janus"
+    path: "{{ janus_home_dir }}/{{ item.user }}/.janus"
   register: janus_dir
   with_items: "{{ janus_users }}"
 
