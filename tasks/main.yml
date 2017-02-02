@@ -7,7 +7,8 @@
 
 - name: Debug dot_janus_directory variable.
   debug:
-    var: "{{ dot_janus_directory.item }}"
+    msg: "Item: {{ item.stat }}"
+    var: "{{ dot_janus_directory.results }}"
   with_items: "{{ janus_users }}"
 
 - name: Back up previous vim install files.
