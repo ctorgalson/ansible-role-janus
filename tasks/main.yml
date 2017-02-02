@@ -7,7 +7,7 @@
 
 - name: Debug dot_janus_directory variable.
   debug:
-    msg: "Item: {{ item.stat }}"
+    msg: "Item: {{ item }}"
     var: "{{ dot_janus_directory }}"
   with_items: "{{ janus_users }}"
 
