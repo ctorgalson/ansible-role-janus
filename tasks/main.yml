@@ -5,7 +5,8 @@
     register: dot_janus_directory
   with_items: "{{ janus_users }}"
 
-- debug:
+- name: Debug var.
+  debug:
     var: dot_janus_directory
 
 - name: Back up previous vim install files.
