@@ -8,8 +8,8 @@
 - name: Debug dot_janus_directory variable.
   debug:
     msg: "Item: {{ item }}"
-    var: "{{ dot_janus_directory }}"
-  with_items: "{{ janus_users }}"
+    # var: "{{ dot_janus_directory }}"
+  with_items: "{{ dot_janus_directory }}"
 
 - name: Back up previous vim install files.
   command: "removes={{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }} creates={{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }}.old mv {{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }} {{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }}.old"
