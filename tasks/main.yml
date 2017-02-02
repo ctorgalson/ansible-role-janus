@@ -13,7 +13,7 @@
   debug:
     msg: "Item: {{ stat.exists }}"
     # var: "{{ dot_janus_directory }}"
-  with_items: "{{ dot_janus_directory }}"
+  with_items: "{{ dot_janus_directory.results }}"
 
 - name: Back up previous vim install files.
   command: "removes={{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }} creates={{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }}.old mv {{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }} {{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }}.old"
