@@ -7,7 +7,7 @@
 
 - name: Debug dot_janus_directory variable.
   debug:
-    var: "{{ dot_janus_directory }}"
+    var: dot_janus_directory"
 
 - name: Debug individual parts of dot_janus_directory variable.
   debug:
