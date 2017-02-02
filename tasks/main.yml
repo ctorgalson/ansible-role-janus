@@ -2,7 +2,7 @@
 - name: Check to see if janus has been previously installed.
   stat:
     path: "{{ janus_home_dir }}/{{ item.user }}/.janus"
-    register: dot_janus_directory
+  register: dot_janus_directory
   with_items: "{{ janus_users }}"
 
 - name: Debug var.
