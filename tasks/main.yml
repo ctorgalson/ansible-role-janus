@@ -22,9 +22,9 @@
 
 - name: Debug individual parts of janus_current_commit variable.
   debug:
-    msg: "{{ item }}"
+    var: "{{ janus_directory_results }}"
     # msg: "{{ janus_home_dir }}/{{ item.item.user }}/.vim/janus exists: {{ item.stat.exists }}"
-  with_items: "{{ janus_directory.results }}"
+    #with_items: "{{ janus_directory.results }}"
 
 - name: Back up previous vim install files.
   command: "removes={{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }} creates={{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }}.old mv {{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }} {{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }}.old"
