@@ -19,6 +19,7 @@
   with_items: "{{ janus_directory.results }}"
   register: janus_current_commit
   when: "{{ item.stat.exists }}"
+  changed_when: false
 
   #- name: Debug janus_current_commit variable.
   #  debug:
