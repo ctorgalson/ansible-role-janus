@@ -31,11 +31,9 @@
 - name: Clone janus repository to each user's home directory.
   git:
     repo: "https://github.com/carlhuda/janus.git"
-    dest: "{{ janus_home_dir }}/{{ item.0.user }}/.vim"
+    dest: "{{ janus_home_dir }}/{{ item.user }}/.vim"
     update: no
-  with_together:
-    - "{{ janus_users }}"
-    - "{{ janus_current_commit.results }}"
+  with_items: "{{ janus_users }}"
   become: True
   register: janus_clone
   changed_when: false
@@ -43,8 +41,10 @@
 # This command makes further git commands, so we check to see if the latest
 # commit has changed here instead of in the git task.
 - name: Run `rake` in each user's new .vim directory.
-  command: "chdir={{ janus_home_dir }}/{{ item.user }}/.vim rake"
-  with_items: "{{ janus_users }}"
+  command: "chdir={{ janus_home_dir }}/{{ item.0.user }}/.vim rake"
+  with_together:
+    - "{{ janus_users }}"
+    - "{{ janus_current_commit.results }}"
   become: True
   register: rake
   when: janus_always_run_rake
