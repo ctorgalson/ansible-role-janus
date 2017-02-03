@@ -54,7 +54,7 @@
     - "{{ janus_current_commit.results }}"
   become: True
   register: janus_clone
-  changed_when: janus_clone.after != item.1.stdout
+  changed_when: "janus_clone.after != '{{ item.1.stdout }}'"
 
 - name: Ensure `.janus` directory exists for each user.
   file:
