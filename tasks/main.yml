@@ -34,7 +34,12 @@
   file:
     path: "{{ janus_home_dir }}/{{ item.user }}/.janus"
     state: directory
+  register: create_janus_directory
   with_items: "{{ janus_users }}"
+
+- name: Debug create_janus_directory.
+  debug:
+    var: create_janus_directory
 
 - name: Clone plugin repos to `.janus` directory for each user.
   git:
