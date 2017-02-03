@@ -22,8 +22,7 @@
 
 - name: Debug individual parts of janus_current_commit variable.
   debug:
-    var: "{{ janus_current_commit }}"
-    # msg: "{{ janus_home_dir }}/{{ item.item.user }}/.vim/janus exists: {{ item.stat.exists }}"
+    msg: "{{ item }}"
     with_items: "{{ janus_current_commit.results }}"
 
 - name: Back up previous vim install files.
