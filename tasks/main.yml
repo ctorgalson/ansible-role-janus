@@ -32,7 +32,7 @@
 
 - name: Debug vars together.
   debug:
-    msg: "{{ item.item }}"
+    msg: "{{ item.1.stdout }}"
   with_together:
     - "{{ janus_users }}"
     - "{{ janus_current_commit.results }}"
