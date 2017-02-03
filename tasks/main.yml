@@ -22,7 +22,7 @@
 
 - name: Debug individual parts of janus_current_commit variable.
   debug:
-    msg: "{{ item.item.stdout }}"
+    msg: "{{ item.stdout }}"
   with_items: "{{ janus_current_commit.results }}"
 
 - name: Back up previous vim install files.
