@@ -36,6 +36,14 @@
     - "{{ janus_current_commit.results }}"
   become: True
   register: janus_clone
+  changed_when: false
+
+- name: Run `rake` in each user's new .vim directory.
+  command: "chdir={{ janus_home_dir }}/{{ item.user }}/.vim rake"
+  with_items: "{{ janus_users }}"
+  become: True
+  register: rake
+  when: janus_always_run_rake
   changed_when: "'{{ item.1.stdout }}' is not defined or ('{{ item.1.stdout }}' is defined and janus_clone.after != '{{ item.1.stdout }}')"
 
 - name: Ensure `.janus` directory exists for each user.
@@ -53,17 +61,6 @@
   with_nested:
     - "{{ janus_users }}"
     - "{{ janus_vim_plugins }}"
-
-- name: Run `rake` in each user's new .vim directory.
-  command: "chdir={{ janus_home_dir }}/{{ item.user }}/.vim rake"
-  with_items: "{{ janus_users }}"
-  become: True
-  register: rake
-  when: janus_always_run_rake
-
-- name: Debug `rake` results.
-  debug:
-    var: rake
 
 - name: Make sure permissions are correct in user's own home directories.
   file:
