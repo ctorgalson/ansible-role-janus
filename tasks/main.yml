@@ -38,6 +38,10 @@
   register: janus_clone
   changed_when: false
 
+- name: Debug janus_current_commit.
+  debug:
+    var: janus_current_commit
+
 - name: Debug janus_clone.
   debug:
     var: janus_clone
