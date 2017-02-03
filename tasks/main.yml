@@ -5,39 +5,19 @@
   register: janus_directory
   with_items: "{{ janus_users }}"
 
-  # - name: Debug janus_directory variable.
-  #   debug:
-  #     var: janus_directory
-  # 
-  # - name: Debug individual parts of janus_directory variable.
-  #   debug:
-  #     msg: "{{ janus_home_dir }}/{{ item.item.user }}/.vim/janus exists: {{ item.stat.exists }}"
-  #   with_items: "{{ janus_directory.results }}"
-
+# This task (and those that make use of its `janus_current_commit` variable
+# should not be needed since the git module's return values should contain
+# the latest commit hash in `after`, and the previous one in `before`.
+#
+# I've never been able to get the git task in this role to return a `before`
+# value of anything but `null`, so this task creates a variable that we can
+# use to figure out a `changed_when` value for the git task.
 - name: Get latest commit id from existing janus install.
   command: "chdir={{ janus_home_dir }}/{{ item.item.user }}/.vim git rev-parse HEAD"
   with_items: "{{ janus_directory.results }}"
   register: janus_current_commit
   when: "{{ item.stat.exists }}"
   changed_when: false
-
-  #- name: Debug janus_current_commit variable.
-  #  debug:
-  #    msg: "{{ janus_current_commit.results }}"
-  #
-  #- name: Debug individual parts of janus_current_commit variable.
-  #  debug:
-  #    msg: "{{ item.stdout }}"
-  #  with_items: "{{ janus_current_commit.results }}"
-  #  when: "{{ item.item.stat.exists }}"
-
-  #- name: Debug vars together.
-  #  debug:
-  #    msg: "{{ item }}"
-  #  with_together:
-  #    - "{{ janus_users }}"
-  #    - "{{ janus_current_commit.results }}"
-  #  when: "'{{ item.1.stdout }}' is defined"
 
 - name: Back up previous vim install files.
   command: "removes={{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }} creates={{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }}.old mv {{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }} {{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }}.old"
