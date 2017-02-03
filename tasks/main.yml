@@ -1,19 +1,18 @@
 ---
 - name: Check to see if janus has been previously installed.
   stat:
-    path: "{{ janus_home_dir }}/{{ item.user }}/.janus"
-  register: dot_janus_directory
+    path: "{{ janus_home_dir }}/{{ item.user }}/.vim/ijanus"
+  register: janus_directory
   with_items: "{{ janus_users }}"
 
-- name: Debug dot_janus_directory variable.
+- name: Debug janus_directory variable.
   debug:
-    var: dot_janus_directory
+    var: janus_directory
 
-- name: Debug individual parts of dot_janus_directory variable.
+- name: Debug individual parts of janus_directory variable.
   debug:
     msg: "item.stat.exists: {{ item.stat.exists }}"
-    # var: "{{ dot_janus_directory }}"
-  with_items: "{{ dot_janus_directory.results }}"
+  with_items: "{{ janus_directory.results }}"
 
 - name: Back up previous vim install files.
   command: "removes={{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }} creates={{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }}.old mv {{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }} {{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }}.old"
@@ -34,12 +33,7 @@
   file:
     path: "{{ janus_home_dir }}/{{ item.user }}/.janus"
     state: directory
-  register: create_janus_directory
   with_items: "{{ janus_users }}"
-
-- name: Debug create_janus_directory.
-  debug:
-    var: create_janus_directory
 
 - name: Clone plugin repos to `.janus` directory for each user.
   git:
