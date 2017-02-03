@@ -44,7 +44,7 @@
   with_together:
     - "{{ janus_users }}"
     - "{{ janus_current_commit.results }}"
-    - "janus_clone.results"
+    - "{{ janus_clone.results }}"
   when: "'{{ item.1.stdout }}' is defined"
 
 # This command runs further git commands, so we check to see if the latest
