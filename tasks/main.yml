@@ -38,15 +38,14 @@
   register: janus_clone
   changed_when: false
 
-- name: Debug janus_current_commit.
-  debug:
-    var: janus_current_commit
-
 - name: Debug janus_clone.
   debug:
-    var: janus_clone
+    var: "{{ item }}"
+  with_together:
+    - "{{ janus_users }}"
+    - "{{ janus_current_commit.results }}"
 
-# This command makes further git commands, so we check to see if the latest
+# This command runs further git commands, so we check to see if the latest
 # commit has changed here instead of in the git task.
 - name: Run `rake` in each user's new .vim directory.
   command: "chdir={{ janus_home_dir }}/{{ item.0.user }}/.vim rake"
