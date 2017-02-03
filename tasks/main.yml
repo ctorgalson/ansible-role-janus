@@ -47,10 +47,14 @@
 - name: Clone janus repository to each user's home directory.
   git:
     repo: "https://github.com/carlhuda/janus.git"
-    dest: "{{ janus_home_dir }}/{{ item.user }}/.vim"
+    dest: "{{ janus_home_dir }}/{{ item.0.user }}/.vim"
     update: no
-  with_items: "{{ janus_users }}"
+  with_together:
+    - "{{ janus_users }}"
+    - "{{ janus_current_commit.results }}"
   become: True
+  register: janus_clone
+  when: "{{ janus_clone.after == item.1.stdout }}"
 
 - name: Ensure `.janus` directory exists for each user.
   file:
