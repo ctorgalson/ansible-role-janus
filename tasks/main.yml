@@ -40,7 +40,7 @@
 
 - name: Debug janus_clone.
   debug:
-    msg: "{{ item }}"
+    msg: "{{ item.1 }}"
   with_together:
     - "{{ janus_users }}"
     - "{{ janus_current_commit.results }}"
