@@ -38,15 +38,6 @@
   register: janus_clone
   changed_when: false
 
-- name: Debug janus_clone.
-  debug:
-    msg: "{{ item.1.stdout }} / {{ item.2.after }}"
-  with_together:
-    - "{{ janus_users }}"
-    - "{{ janus_current_commit.results }}"
-    - "{{ janus_clone.results }}"
-  when: "'{{ item.1.stdout }}' is defined"
-
 # This command runs further git commands, so we check to see if the latest
 # commit has changed here instead of in the git task.
 - name: Run `rake` in each user's new .vim directory.
