@@ -40,7 +40,7 @@
 
 - name: Debug janus_clone.
   debug:
-    msg: "{{ item.1.stdout }} / "
+    msg: "{{ item.1.stdout }} / {{ item.2.after }}"
   with_together:
     - "{{ janus_users }}"
     - "{{ janus_current_commit.results }}"
