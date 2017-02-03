@@ -26,6 +26,8 @@
     - "{{ janus_backup_files }}"
   changed_when: false
 
+# We make this task never indicated `changed` since the subsequent `rake` task
+# actually runs git commands.
 - name: Clone janus repository to each user's home directory.
   git:
     repo: "https://github.com/carlhuda/janus.git"
@@ -38,6 +40,8 @@
   register: janus_clone
   changed_when: false
 
+# This command makes further git commands, so we check to see if the latest
+# commit has changed here instead of in the git task.
 - name: Run `rake` in each user's new .vim directory.
   command: "chdir={{ janus_home_dir }}/{{ item.user }}/.vim rake"
   with_items: "{{ janus_users }}"
