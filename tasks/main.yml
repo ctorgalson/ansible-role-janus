@@ -58,7 +58,12 @@
   command: "chdir={{ janus_home_dir }}/{{ item.user }}/.vim rake"
   with_items: "{{ janus_users }}"
   become: True
+  register: rake
   when: janus_always_run_rake
+
+- name: Debug `rake` results.
+  debug:
+    var: rake
 
 - name: Make sure permissions are correct in user's own home directories.
   file:
