@@ -38,6 +38,10 @@
   register: janus_clone
   changed_when: false
 
+- name: Debug janus_clone.
+  debug:
+    var: janus_clone
+
 # This command makes further git commands, so we check to see if the latest
 # commit has changed here instead of in the git task.
 - name: Run `rake` in each user's new .vim directory.
