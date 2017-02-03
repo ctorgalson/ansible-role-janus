@@ -54,10 +54,11 @@
   with_together:
     - "{{ janus_users }}"
     - "{{ janus_current_commit.results }}"
+    - "{{ janus_clone.results }}"
   become: True
   register: rake
   when: janus_always_run_rake
-  changed_when: "'{{ item.1.stdout }}' is not defined or ('{{ item.1.stdout }}' is defined and janus_clone.after != '{{ item.1.stdout }}')"
+  changed_when: "'{{ item.1.stdout }}' is not defined or ('{{ item.2.after }}' != '{{ item.1.stdout }}')"
 
 - name: Ensure `.janus` directory exists for each user.
   file:
