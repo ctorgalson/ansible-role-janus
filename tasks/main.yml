@@ -40,10 +40,11 @@
 
 - name: Debug janus_clone.
   debug:
-    msg: "{{ item.1 }}"
+    msg: "{{ item.1.stdout }}"
   with_together:
     - "{{ janus_users }}"
     - "{{ janus_current_commit.results }}"
+  when: "'{{ item.1.stdout }}' is defined"
 
 # This command runs further git commands, so we check to see if the latest
 # commit has changed here instead of in the git task.
