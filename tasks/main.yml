@@ -20,6 +20,10 @@
   register: janus_current_commit
   when: "{{ item.stat.exists }}"
 
+- name: Debug janus_current_commit variable.
+  debug:
+    msg: "{{ janus_current_commit.results }}"
+
 - name: Debug individual parts of janus_current_commit variable.
   debug:
     msg: "{{ item }}"
