@@ -30,6 +30,13 @@
   with_items: "{{ janus_current_commit.results }}"
   when: "{{ item.item.stat.exists }}"
 
+- name: Debug vars together.
+  debug:
+    msg: "{{ item }}"
+  with_together:
+    - "{{ janus_users }}"
+    - "{{ janus_current_commit.results }}"
+
 - name: Back up previous vim install files.
   command: "removes={{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }} creates={{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }}.old mv {{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }} {{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }}.old"
   with_nested:
@@ -42,7 +49,7 @@
     repo: "https://github.com/carlhuda/janus.git"
     dest: "{{ janus_home_dir }}/{{ item.user }}/.vim"
     update: no
-  with_items: "{{ janus_users }}"
+  with_together: "{{ janus_users }}"
   become: True
 
 - name: Ensure `.janus` directory exists for each user.
