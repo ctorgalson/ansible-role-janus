@@ -28,6 +28,7 @@
   debug:
     msg: "{{ item.stdout }}"
   with_items: "{{ janus_current_commit.results }}"
+  when: "{{ item.item.stdout.exists }}"
 
 - name: Back up previous vim install files.
   command: "removes={{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }} creates={{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }}.old mv {{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }} {{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }}.old"
