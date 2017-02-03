@@ -5,13 +5,25 @@
   register: janus_directory
   with_items: "{{ janus_users }}"
 
-- name: Debug janus_directory variable.
-  debug:
-    var: janus_directory
+  # - name: Debug janus_directory variable.
+  #   debug:
+  #     var: janus_directory
+  # 
+  # - name: Debug individual parts of janus_directory variable.
+  #   debug:
+  #     msg: "{{ janus_home_dir }}/{{ item.item.user }}/.vim/janus exists: {{ item.stat.exists }}"
+  #   with_items: "{{ janus_directory.results }}"
 
-- name: Debug individual parts of janus_directory variable.
+- name: Get latest commit id from existing janus install.
+  command: "chdir={{ janus_home_dir }}/{{ item.item.user }}/.vim git rev-parse HEAD"
+  with_items: "{{ janus_directory.results }}"
+  register: janus_current_commit
+  when: "{{ item.stat.exists }}"
+
+- name: Debug individual parts of janus_current_commit variable.
   debug:
-    msg: "{{ janus_home_dir }}/{{ item.item.user }}/.vim/janus exists: {{ item.stat.exists }}"
+    msg: "{{ item }}"
+    # msg: "{{ janus_home_dir }}/{{ item.item.user }}/.vim/janus exists: {{ item.stat.exists }}"
   with_items: "{{ janus_directory.results }}"
 
 - name: Back up previous vim install files.
