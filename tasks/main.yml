@@ -36,7 +36,7 @@
   with_together:
     - "{{ janus_users }}"
     - "{{ janus_current_commit.results }}"
-  when: "{{ item.1.stdout }} is defined"
+  when: "'{{ item.1.stdout }}' is defined"
 
 - name: Back up previous vim install files.
   command: "removes={{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }} creates={{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }}.old mv {{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }} {{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }}.old"
@@ -55,7 +55,7 @@
     - "{{ janus_current_commit.results }}"
   become: True
   register: janus_clone
-  changed_when: "'{{ item.1.stdout }}' is defined and janus_clone.after != '{{ item.1.stdout }}'"
+  changed_when: "{{ item.1.stdout }} is not defined or ('{{ item.1.stdout }}' is defined and janus_clone.after != '{{ item.1.stdout }}')"
 
 - name: Ensure `.janus` directory exists for each user.
   file:
