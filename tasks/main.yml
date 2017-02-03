@@ -55,7 +55,7 @@
     - "{{ janus_current_commit.results }}"
   become: True
   register: janus_clone
-  hanged_when: "{{ item.1.stdout }} is defined and janus_clone.after != '{{ item.1.stdout }}'"
+  changed_when: "{{ item.1.stdout }} is defined and janus_clone.after != '{{ item.1.stdout }}'"
 
 - name: Ensure `.janus` directory exists for each user.
   file:
