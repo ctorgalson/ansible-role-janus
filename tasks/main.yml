@@ -1,7 +1,7 @@
 ---
 - name: Check to see if janus has been previously installed.
   stat:
-    path: "{{ janus_home_dir }}/{{ item.user }}/.vim/ijanus"
+    path: "{{ janus_home_dir }}/{{ item.user }}/.vim/janus"
   register: janus_directory
   with_items: "{{ janus_users }}"
 
@@ -11,7 +11,7 @@
 
 - name: Debug individual parts of janus_directory variable.
   debug:
-    msg: "item.stat.exists: {{ item.stat.exists }}"
+    msg: "{{ janus_home_dir }}/{{ item.item.user }}/.vim/janus exists: {{ item.stat.exists }}"
   with_items: "{{ janus_directory.results }}"
 
 - name: Back up previous vim install files.
