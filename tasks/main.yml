@@ -25,6 +25,7 @@
     - "{{ janus_users }}"
     - "{{ janus_backup_files }}"
   become: true
+  become_user: "{{ item.user }}"
   changed_when: false
 
 # We make this task never indicated `changed` since the subsequent `rake` task
@@ -36,6 +37,7 @@
     update: no
   with_items: "{{ janus_users }}"
   become: true
+  become_user: "{{ item.user }}"
   register: janus_clone
   changed_when: false
 
