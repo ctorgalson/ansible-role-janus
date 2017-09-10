@@ -16,7 +16,7 @@
   command: "chdir={{ janus_home_dir }}/{{ item.item.user }}/.vim git rev-parse HEAD"
   with_items: "{{ janus_directory.results }}"
   register: janus_current_commit
-  when: "{{ item.stat.exists }}"
+  when: item.stat.exists
   changed_when: false
 
 - name: Back up previous vim install files.
@@ -34,7 +34,7 @@
     dest: "{{ janus_home_dir }}/{{ item.user }}/.vim"
     update: no
   with_items: "{{ janus_users }}"
-  become: True
+  become: true
   register: janus_clone
   changed_when: false
 
@@ -46,10 +46,10 @@
     - "{{ janus_users }}"
     - "{{ janus_current_commit.results }}"
     - "{{ janus_clone.results }}"
-  become: True
+  become: true
   register: rake
   when: janus_always_run_rake
-  changed_when: "'{{ item.1.stdout }}' is not defined or ('{{ item.2.after }}' != '{{ item.1.stdout }}')"
+  changed_when: item.1.stdout is not defined or (item.2.after != item.1.stdout)
 
 - name: Ensure `.janus` directory exists for each user.
   file:
@@ -72,11 +72,11 @@
     path: "{{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }}"
     owner: "{{ item.0.user }}"
     group: "{{ item.0.group }}"
-    recurse: True
+    recurse: true
   with_nested:
     - "{{ janus_users }}"
     - "{{ janus_created_directories }}"
-  become: True
+  become: true
   register: ownership
   changed_when: false
-  failed_when: "ownership.owner != '{{ item.0.user }}' or ownership.group != '{{ item.0.group }}'"
+  failed_when: ownership.owner != item.0.user or ownership.group != item.0.group
