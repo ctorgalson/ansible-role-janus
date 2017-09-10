@@ -24,6 +24,7 @@
   with_nested:
     - "{{ janus_users }}"
     - "{{ janus_backup_files }}"
+  become: true
   changed_when: false
 
 # We make this task never indicated `changed` since the subsequent `rake` task
