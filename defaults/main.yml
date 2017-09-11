@@ -23,3 +23,4 @@ janus_created_directories:
   - ".janus"
   - ".vim"
 janus_always_run_rake: yes
+janus_rake_dir: "/usr/bin"
