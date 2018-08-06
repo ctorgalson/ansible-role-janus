@@ -1,86 +1,41 @@
 ---
+- name: Establish home directory.
+  set_fact:
+    janus_user_home_dir: "{{ (ansible_system == 'Darwin') | ternary('Users', 'home') }}"
+
+- name: Set full path to user home directory.
+  set_fact:
+    janus_user_home_path: "/{{ janus_user_home_dir }}/{{ janus_user.name }}"
+
+- name: Set Janus install path.
+  set_fact:
+    janus_install_path: "{{ janus_user_home_path }}/.vim"
+
+- name: Set Janus plugin directory.
+  set_fact:
+    janus_plugin_install_path: "{{ janus_user_home_path }}/.janus"
+
 - name: Check to see if janus has been previously installed.
   stat:
-    path: "{{ janus_home_dir }}/{{ item.user }}/.vim/janus"
-  register: janus_directory
-  with_items: "{{ janus_users }}"
+    path: "{{ janus_install_path }}/janus"
+  register: janus_install_directory
 
-# This task (and those that make use of its `janus_current_commit` variable
-# should not be needed since the git module's return values should contain
-# the latest commit hash in `after`, and the previous one in `before`.
-#
-# I've never been able to get the git task in this role to return a `before`
-# value of anything but `null`, so this task creates a variable that we can
-# use to figure out a `changed_when` value for the git task.
-- name: Get latest commit id from existing janus install.
-  command: "chdir={{ janus_home_dir }}/{{ item.item.user }}/.vim git rev-parse HEAD"
-  with_items: "{{ janus_directory.results }}"
-  register: janus_current_commit
-  when: item.stat.exists
-  changed_when: false
+- name: Run pre-install tasks.
+  include_tasks: "preinstall.yml"
+  when: janus_required_packages != []
 
-- name: Back up previous vim install files.
-  command: "removes={{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }} creates={{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }}.old mv {{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }} {{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }}.old"
-  with_nested:
-    - "{{ janus_users }}"
-    - "{{ janus_backup_files }}"
-  become: true
-  become_user: "{{ item.0.user }}"
-  changed_when: false
+- name: Run backup tasks.
+  include_tasks: "backup.yml"
+  vars:
+    backup_file: "{{ backup_file_item }}"
+  with_items: "{{ janus_backup_files }}"
+  loop_control:
+    loop_var: backup_file_item
+  when: janus_backup_files != []
 
-# We make this task never indicated `changed` since the subsequent `rake` task
-# actually runs git commands.
-- name: Clone janus repository to each user's home directory.
-  git:
-    repo: "https://github.com/carlhuda/janus.git"
-    dest: "{{ janus_home_dir }}/{{ item.user }}/.vim"
-    update: no
-  with_items: "{{ janus_users }}"
-  become: true
-  become_user: "{{ item.user }}"
-  register: janus_clone
-  changed_when: false
+- name: Install Janus.
+  include_tasks: "install.yml"
 
-# This command runs further git commands, so we check to see if the latest
-# commit has changed here instead of in the git task.
-- name: Run `rake` in each user's new .vim directory.
-  command: "chdir={{ janus_home_dir }}/{{ item.0.user }}/.vim {{ janus_rake_dir }}/rake"
-  with_together:
-    - "{{ janus_users }}"
-    - "{{ janus_current_commit.results }}"
-    - "{{ janus_clone.results }}"
-  become: true
-  become_user: "{{ item.0.user }}"
-  register: rake
-  when: janus_always_run_rake
-  changed_when: item.1.stdout is not defined or (item.2.after != item.1.stdout)
-
-- name: Ensure `.janus` directory exists for each user.
-  file:
-    path: "{{ janus_home_dir }}/{{ item.user }}/.janus"
-    state: directory
-  with_items: "{{ janus_users }}"
-
-- name: Clone plugin repos to `.janus` directory for each user.
-  git:
-    repo: "{{ item.1.url }}"
-    dest: "{{ janus_home_dir }}/{{ item.0.user }}/.janus/{{ item.1.name }}"
-    force: yes
-    update: "{{ janus_vim_plugins_update }}"
-  with_nested:
-    - "{{ janus_users }}"
-    - "{{ janus_vim_plugins }}"
-
-- name: Make sure permissions are correct in user's own home directories.
-  file:
-    path: "{{ janus_home_dir }}/{{ item.0.user }}/{{ item.1 }}"
-    owner: "{{ item.0.user }}"
-    group: "{{ item.0.group }}"
-    recurse: true
-  with_nested:
-    - "{{ janus_users }}"
-    - "{{ janus_created_directories }}"
-  become: true
-  register: ownership
-  changed_when: false
-  failed_when: ownership.owner != item.0.user or ownership.group != item.0.group
+- name: Install plugins.
+  include_tasks: "plugins.yml"
+  when: janus_vim_plugins != []
