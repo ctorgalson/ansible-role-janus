@@ -1,0 +1,27 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    users:
+      - name: "lorem"
+        group: "lorem"
+      - name: "ipsum"
+        group: "ipsum"
+    janus_vim_plugins:
+      - name: "lightline.vim"
+        url: "https://github.com/itchyny/lightline.vim"
+        update: false
+      - name: "vim-surround"
+        url: "https://github.com/tpope/vim-surround.git"
+        update: true
+    janus_backup_files:
+      - ".vimrc"
+  tasks:
+    - name: Install Janus for users.
+      include_role:
+        name: "ansible-role-janus"
+      vars:
+        janus_user: "{{ user }}"
+      with_items: "{{ users }}"
+      loop_control:
+        loop_var: user

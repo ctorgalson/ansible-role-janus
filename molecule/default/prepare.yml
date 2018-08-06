@@ -1,0 +1,38 @@
+---
+- name: Prepare
+  hosts: all
+  gather_facts: false
+  become: true
+  vars:
+    users:
+      - name: "lorem"
+        group: "lorem"
+      - name: "ipsum"
+        group: "ipsum"
+
+  tasks:
+    - name: Create users.
+      user:
+        name: "{{ vim_user.name }}"
+      with_items: "{{ users }}"
+      loop_control:
+        loop_var: vim_user
+
+    - name: Install packages.
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - "git"
+        - "rake"
+        - "vim"
+
+    - name: Install .vimrc files for each user.
+      get_url:
+        url: "https://raw.githubusercontent.com/amix/vimrc/master/vimrcs/basic.vim"
+        dest: "/home/{{ vimrc_user.name }}/.vimrc"
+        owner: "{{ vimrc_user.name }}"
+        group: "{{ vimrc_user.group }}"
+      with_items: "{{ users }}"
+      loop_control:
+        loop_var: vimrc_user
