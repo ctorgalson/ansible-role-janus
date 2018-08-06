@@ -1,0 +1,19 @@
+---
+# Back up tasks.
+
+- name: Back up previous Vim install files.
+  block:
+    - name: Check existence of backup file.
+      stat:
+        path: "{{ janus_user_home_path }}/{{ backup_file }}"
+      register: backup_file_result
+
+    - name: Copy previous Vim install files to datestamped versions.
+      copy:
+        src: "{{ janus_user_home_path }}/{{ backup_file }}"
+        dest: "{{ janus_user_home_path }}/{{ backup_file }}.{{ ansible_date_time.iso8601 }}"
+        remote_src: true
+        owner: "{{ janus_user.name }}"
+        group: "{{ janus_user.group }}"
+      changed_when: false
+      when: backup_file_result.stat.exists
