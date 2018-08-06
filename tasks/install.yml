@@ -1,0 +1,27 @@
+---
+# Janus install tasks.
+
+# This task never reports `changed` since the subsequent `rake` task runs
+# `git` commands.
+- name: Clone Janus repository into home directory.
+  git:
+    repo: "{{ janus_git_repo }}"
+    dest: "{{ janus_install_path }}"
+    update: false
+    version: "{{ janus_version | default('HEAD') }}"
+    force: "{{ janus_git_force }}"
+
+- name: Update file ownership on Janus directory.
+  file:
+    path: "{{ janus_install_path }}"
+    state: directory
+    owner: "{{ janus_user.name }}"
+    group: "{{ janus_user.group }}"
+    recurse: true
+  changed_when: false
+
+- name: Install Janus.
+  command: "rake"
+  args:
+    chdir: "{{ janus_install_path }}"
+  changed_when: false
