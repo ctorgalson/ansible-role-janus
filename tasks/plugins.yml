@@ -13,9 +13,7 @@
     repo: "{{ plugin.url }}"
     dest: "{{ janus_plugin_install_path }}/{{ plugin.name }}"
     force: "{{ plugin.force | default(false) }}"
-    # Note: this deviation in code style necessitated by a weird Ansible bug:
-    # https://git.io/fN1Tc
-    update: "{{ plugin['update'] | default(true) }}"
+    update: "{{ plugin.updaterepo | default(true) }}"
     version: "{{ plugin.version | default('HEAD') }}"
   with_items: "{{ janus_vim_plugins }}"
   loop_control:

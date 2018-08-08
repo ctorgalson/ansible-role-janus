@@ -23,7 +23,7 @@ repository to clone Janus from. Should seldome need changing. |
 | `janus_vim_plugins[n].url` | `-` | The url of the plugin to install. Used for the `repo` parameter of the Git module when cloning. |
 | `janus_vim_plugins[n].version` | `HEAD` | The version of the plugin to install. Used for the `version` parameter of the Git module when cloning. |
 | `janus_vim_plugins[n]force` | `false` | Whether or not to force-clone the plugin. Used for the `force` parameter of the Git module when cloning. |
-| `janus_vim_plugins[n]update` | `true` | Whether or not to update the plugin repo. Used for the `update` parameter of the Git module when cloning. |
+| `janus_vim_plugins[n]updaterepo` | `true` | Whether or not to update the plugin repo. Used for the `update` parameter of the Git module when cloning. |
 
 ## Role task fileso
 
@@ -89,10 +89,10 @@ This task installs any defined modules into the appropriate directory
         janus_vim_plugins:
           - name: "lightline.vim"
             url: "https://github.com/itchyny/lightline.vim"
-            update: false
+            updaterepo: false
           - name: "vim-surround"
             url: "https://github.com/tpope/vim-surround.git"
-            update: true
+            updaterepo: true
         janus_backup_files:
           - ".vimrc"
       tasks:
