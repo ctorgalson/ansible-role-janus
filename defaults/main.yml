@@ -21,9 +21,9 @@ janus_vim_plugins: []
 #    url: "https://github.com/joonty/vdebug.git"
 #    version: "HEAD"
 #    force: true
-#    update: true
+#    updaterepo: true
 #  - name: "vim-surround"
 #    url: "https://github.com/tpope/vim-surround.git"
 #    version: "HEAD"
 #    force: true
-#    update: true
+#    updaterepo: true

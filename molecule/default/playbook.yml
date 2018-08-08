@@ -10,10 +10,10 @@
     janus_vim_plugins:
       - name: "lightline.vim"
         url: "https://github.com/itchyny/lightline.vim"
-        update: false
+        updaterepo: false
       - name: "vim-surround"
         url: "https://github.com/tpope/vim-surround.git"
-        update: true
+        updaterepo: true
     janus_backup_files:
       - ".vimrc"
   tasks:
