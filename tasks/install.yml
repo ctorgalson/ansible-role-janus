@@ -11,6 +11,13 @@
     version: "{{ janus_version | default('HEAD') }}"
     force: "{{ janus_git_force }}"
 
+- name: Install Janus.
+  shell: "rake"
+  args:
+    chdir: "{{ janus_install_path }}"
+  changed_when: false
+  become: true
+
 - name: Update file ownership on Janus directory.
   file:
     path: "{{ janus_install_path }}"
@@ -18,10 +25,4 @@
     owner: "{{ janus_user.name }}"
     group: "{{ janus_user.group }}"
     recurse: true
-  changed_when: false
-
-- name: Install Janus.
-  command: "rake"
-  args:
-    chdir: "{{ janus_install_path }}"
   changed_when: false
