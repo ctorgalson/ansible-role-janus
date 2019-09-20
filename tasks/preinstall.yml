@@ -5,18 +5,12 @@
   block:
     - name: Install packages for Linux.
       package:
-        name: "{{ linux_package }}"
+        name: "{{ janus_required_packages | default([]) }}"
         state: present
-      with_items: "{{ janus_required_packages }}"
-      loop_control:
-        loop_var: linux_package
-      when: ansible_system == "Linux"
+      when: "ansible_system == 'Linux'"
 
     - name: Install packages for macOS.
       homebrew:
-        name: "{{ macos_package }}"
+        name: "{{ janus_required_packages | default([]) }}"
         state: present
-      with_items: "{{ janus_required_packages }}"
-      loop_control:
-        loop_var: macos_package
-      when: ansible_system == "Darwin"
+      when: "ansible_system == 'Darwin'"

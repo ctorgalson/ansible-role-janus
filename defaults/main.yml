@@ -1,9 +1,9 @@
 ---
-# Setting this variable to `[]` prevents package installation, but `rake` and
-# `vim` are required.
-janus_required_packages: []
-#  - "rake"
-#  - "vim"
+# Set a value for this variable to install required packages such as
+# `rake` and `vim`. Leave blank if these packages are handled elsewhere.
+# janus_required_packages:
+#   - "rake"
+#   - "vim"
 janus_git_repo: "https://github.com/carlhuda/janus.git"
 # By default, we only clone the repo once since the `rake` command updates the
 # codebase. By setting `janus_git_force` to `true`, you can re-run the clone.
