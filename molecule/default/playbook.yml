@@ -7,6 +7,10 @@
         group: "lorem"
       - name: "ipsum"
         group: "ipsum"
+    janus_required_packages:
+      - "git"
+      - "rake"
+      - "vim"
     janus_vim_plugins:
       - name: "lightline.vim"
         url: "https://github.com/itchyny/lightline.vim"

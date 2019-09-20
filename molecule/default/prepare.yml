@@ -11,14 +11,6 @@
         group: "ipsum"
 
   tasks:
-    - name: Install packages.
-      package:
-        name:
-          - "git"
-          - "rake"
-          - "vim"
-        state: present
-
     - name: Create users.
       user:
         name: "{{ vim_user.name }}"
