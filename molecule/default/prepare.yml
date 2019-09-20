@@ -11,6 +11,14 @@
         group: "ipsum"
 
   tasks:
+    - name: Install packages.
+      package:
+        name:
+          - "git"
+          - "rake"
+          - "vim"
+        state: present
+
     - name: Create users.
       user:
         name: "{{ vim_user.name }}"
@@ -18,15 +26,6 @@
       with_items: "{{ users }}"
       loop_control:
         loop_var: vim_user
-
-    - name: Install packages.
-      package:
-        name: "{{ item }}"
-        state: present
-      with_items:
-        - "git"
-        - "rake"
-        - "vim"
 
     - name: Install .vimrc files for each user.
       get_url:

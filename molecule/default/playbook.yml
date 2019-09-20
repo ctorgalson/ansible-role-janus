@@ -16,12 +16,11 @@
         updaterepo: true
     janus_backup_files:
       - ".vimrc"
+
   tasks:
     - name: Install Janus for users.
       include_role:
         name: "ansible-role-janus"
       vars:
-        janus_user: "{{ user }}"
-      with_items: "{{ users }}"
-      loop_control:
-        loop_var: user
+        janus_user: "{{ item }}"
+      loop: "{{ users }}"
