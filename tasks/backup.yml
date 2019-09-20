@@ -16,5 +16,4 @@
         owner: "{{ janus_user.name }}"
         group: "{{ janus_user.group }}"
       changed_when: false
-
-    when: backup_file_result.stat.exists
+      when: "backup_file_result.stat.exists"
