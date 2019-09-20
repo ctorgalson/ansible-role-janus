@@ -8,10 +8,10 @@ janus_git_repo: "https://github.com/carlhuda/janus.git"
 # By default, we only clone the repo once since the `rake` command updates the
 # codebase. By setting `janus_git_force` to `true`, you can re-run the clone.
 janus_git_force: false
-janus_user: []
-#  - name: "someuser"
-#    group: "somegroup"
-# Setting this variable to `[]` prevents backups.
+# janus_user:
+#   name: "someuser"
+#   group: "somegroup"
+# Set this variable to `[]` to prevent backups.
 janus_backup_files: []
 #  - ".vim"
 #  - ".vimrc"
