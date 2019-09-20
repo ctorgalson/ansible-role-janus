@@ -1,5 +1,3 @@
-import datetime
-
 import os
 
 import pytest
@@ -14,19 +12,13 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
     "lorem",
     "ipsum",
 ])
-@pytest.mark.parametrize("dir", [
+@pytest.mark.parametrize("file", [
     ".vimrc",
 ])
-def test_backup_dirs(host, name, dir):
-    t = datetime.datetime.today().isoformat()[:10]
-    c = "find /home/{0} -name {1}.{2}* | sort -r | head -n1"
-    b = host.run(c.format(name, dir, t))
-    d = host.file(b.stdout)
+def test_backup_files(host, name, file):
+    n = host.run("find . -type f -name '{}.*' | wc -l".format(file))
 
-    assert b.rc == 0
-    assert d.exists
-    assert d.user == name
-    assert d.group == name
+    assert int(float(n.stdout)) > 0
 
 
 @pytest.mark.parametrize("name", [
