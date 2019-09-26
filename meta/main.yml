@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: Christopher Torgalson
-  description: Installs and configures the Janus Vim distribution for one or more users on macOS or Ubuntu.
+  description: Installs and configures the Janus Vim distribution on macOS or Linux.
   license: MIT
 
   min_ansible_version: 1.2
