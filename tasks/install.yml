@@ -1,6 +1,15 @@
 ---
 # Janus install tasks.
 
+- name: Get full path to rake command.
+  shell: "command -v rake"
+  register: "janus_rake_path_output"
+  changed_when: false
+
+- name: Set full path to rake as a fact.
+  set_fact:
+    janus_rake_path: "{{ janus_rake_path_output.stdout }}"
+
 # This task never reports `changed` since the subsequent `rake` task runs
 # `git` commands.
 - name: Clone Janus repository into home directory.
@@ -11,13 +20,6 @@
     version: "{{ janus_version | default('HEAD') }}"
     force: "{{ janus_git_force }}"
 
-- name: Install Janus.
-  shell: "rake"
-  args:
-    chdir: "{{ janus_install_path }}"
-  changed_when: false
-  become: true
-
 - name: Update file ownership on Janus directory.
   file:
     path: "{{ janus_install_path }}"
@@ -26,3 +28,11 @@
     group: "{{ janus_user.group }}"
     recurse: true
   changed_when: false
+
+- name: Install Janus.
+  command: "{{ janus_rake_path }}"
+  args:
+    chdir: "{{ janus_install_path }}"
+  changed_when: false
+  become_user: "{{ janus_user.name }}"
+  become: true
