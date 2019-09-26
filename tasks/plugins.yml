@@ -1,14 +1,14 @@
 ---
 # Plugin install tasks.
 
-- name: Ensure `.janus` directory exists for each user.
+- name: Ensure `.janus` directory exists.
   file:
     path: "{{ janus_plugin_install_path }}"
     state: directory
     owner: "{{ janus_user.name }}"
     group: "{{ janus_user.group }}"
 
-- name: Clone plugin repos to `.janus` directory for each user.
+- name: Clone plugin repos to `.janus` directory.
   git:
     repo: "{{ plugin.url }}"
     dest: "{{ janus_plugin_install_path }}/{{ plugin.name }}"
