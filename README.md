@@ -9,9 +9,9 @@ for one or more users on macOS or Ubuntu, replacing Janus' [automatic installer]
 
 | Variable name  | Default value | Description |
 |----------------|---------------|-------------|
-| `janus_required_packages` | `[]` | List of packages to install (uses [the `package` module](http://docs.ansible.com/ansible/latest/modules/package_module.html#package-module) on Linux, i[the `homebrew` module](http://docs.ansible.com/ansible/latest/modules/homebrew_module.html#homebrew-module) on marcsOS). Janus requires `rake` and `vim` to work, so this might need to be e.g. `['rake', 'vim']`. |
+| `janus_required_packages` | `[]` | List of packages to install (uses [the `package` module](http://docs.ansible.com/ansible/latest/modules/package_module.html#package-module) on Linux, i[the `homebrew` module](http://docs.ansible.com/ansible/latest/modules/homebrew_module.html#homebrew-module) on macOS). Janus requires `rake` and `vim` to work, so this might need to be e.g. `['rake', 'vim']`. |
 | `janus_git_repo` | `https://github.com/carlhuda/janus.git` | The
-repository to clone Janus from. Should seldome need changing. |
+repository to clone Janus from. Should seldom need changing. |
 | `janus_version` | `HEAD` | The git version of Janus to clone. Passed directly to the `version` property of [the Git module](http://docs.ansible.com/ansible/latest/modules/git_module.html#git-module). |
 | `janus_git_force` | `false` | Whether or not to force clone Janus every time the playbook runs. Passed directly to the `force` property of the Git module. |
 | `janus_user` | `[]` | The user to install Janus for. Should include both `name` and `group` properties. |
@@ -25,7 +25,7 @@ repository to clone Janus from. Should seldome need changing. |
 | `janus_vim_plugins[n]force` | `false` | Whether or not to force-clone the plugin. Used for the `force` parameter of the Git module when cloning. |
 | `janus_vim_plugins[n]updaterepo` | `true` | Whether or not to update the plugin repo. Used for the `update` parameter of the Git module when cloning. |
 
-## Role task fileso
+## Role task files
 
 ### `main.yml`: task coordination
 
@@ -77,33 +77,28 @@ This task installs any defined modules into the appropriate directory
 
 ## Sample playbook
 
-    ---
-    - name: Playbook
-      hosts: all
-      vars:
-        users:
-          - name: "lorem"
-            group: "lorem"
-          - name: "ipsum"
-            group: "ipsum"
-        janus_vim_plugins:
-          - name: "lightline.vim"
-            url: "https://github.com/itchyny/lightline.vim"
-            updaterepo: false
-          - name: "vim-surround"
-            url: "https://github.com/tpope/vim-surround.git"
-            updaterepo: true
-        janus_backup_files:
-          - ".vimrc"
-      tasks:
-        - name: Install Janus for users.
-          include_role:
-            name: "ansible-role-janus"
-          vars:
-            janus_user: "{{ user }}"
-          with_items: "{{ users }}"
-          loop_control:
-            loop_var: user
+---
+- hosts: all
+  vars:
+    janus_user:
+      name: "lorem"
+      group: "lorem"
+    janus_required_packages:
+      - "git"
+      - "rake"
+      - "vim"
+    janus_vim_plugins:
+      - name: "lightline.vim"
+        url: "https://github.com/itchyny/lightline.vim"
+        updaterepo: false
+      - name: "vim-surround"
+        url: "https://github.com/tpope/vim-surround.git"
+        updaterepo: true
+    janus_backup_files:
+      - ".vimrc"
+
+  roles:
+    - ctorgalson.janus
 
 ## License
 
