@@ -1,4 +1,8 @@
 ---
+- name: Do nothing unless the janus_user variable is set.
+  meta: end_host
+  when: "janus_user is not defined"
+
 - name: Establish home directory.
   set_fact:
     janus_user_home_dir: "{{ (ansible_system == 'Darwin') | ternary('Users', 'home') }}"
